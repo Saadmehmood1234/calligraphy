@@ -1,3 +1,4 @@
+"use client";
 import { works } from "@/data/works";
 import Image from "next/image";
 import { notFound } from "next/navigation";
