@@ -3,14 +3,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-interface WorkPageProps {
-  params: {
-    work: string;
-  };
-}
 
-export default function WorkPage({ params }: WorkPageProps) {
-  const { work: workId } = params;
+
+export default function WorkPage() {
+  const { work: workId } = useParams();
   const workdata = works.find((w) => w.id === workId);
 
   if (!workdata) {
