@@ -2,7 +2,7 @@ import { works } from "@/data/works";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-
+import { useParams } from "next/navigation";
 interface WorkPageProps {
   params: {
     work: string;
@@ -10,9 +10,10 @@ interface WorkPageProps {
 }
 
 export default function WorkPage({ params }: WorkPageProps) {
-  const work = works.find((w) => w.id === params.work);
+  const { work: workId } = params;
+  const workdata = works.find((w) => w.id === workId);
 
-  if (!work) {
+  if (!workdata) {
     notFound();
   }
 
@@ -31,8 +32,8 @@ export default function WorkPage({ params }: WorkPageProps) {
             <div className="lg:w-1/2">
               <div className="relative aspect-square rounded-xl overflow-hidden shadow-2xl border-2 border-emerald-800/30 bg-emerald-900/10">
                 <Image
-                  src={work.imageUrl}
-                  alt={work.title}
+                  src={workdata.imageUrl}
+                  alt={workdata.title}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -45,14 +46,14 @@ export default function WorkPage({ params }: WorkPageProps) {
 
             <div className="lg:w-1/2">
               <h1 className="text-3xl md:text-4xl font-bold mb-4 text-emerald-500">
-                {work.title}
+                {workdata.title}
               </h1>
               <p className="text-xl text-emerald-400 mb-6 font-medium">
-                {work.category}
+                {workdata.category}
               </p>
 
               <p className="mb-8 text-black leading-relaxed">
-                {work.description}
+                {workdata.description}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -66,7 +67,7 @@ export default function WorkPage({ params }: WorkPageProps) {
                 >
                   <h3 className="font-bold mb-1 text-gray-700">Date Created</h3>
                   <p className="text-white">
-                    {new Date(work.date).toLocaleDateString("en-US", {
+                    {new Date(workdata.date).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
@@ -83,7 +84,7 @@ export default function WorkPage({ params }: WorkPageProps) {
                   }}
                 >
                   <h3 className="font-bold mb-1 text-gray-700">Dimensions</h3>
-                  <p className="text-white">{work.size}</p>
+                  <p className="text-white">{workdata.size}</p>
                 </div>
 
                 <div
@@ -95,7 +96,7 @@ export default function WorkPage({ params }: WorkPageProps) {
                   }}
                 >
                   <h3 className="font-bold mb-1 text-gray-700">Medium</h3>
-                  <p className="text-white">{work.medium}</p>
+                  <p className="text-white">{workdata.medium}</p>
                 </div>
               </div>
 
@@ -132,7 +133,7 @@ export default function WorkPage({ params }: WorkPageProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {works
-              .filter((w) => w.id !== work.id)
+              .filter((w) => w.id !== workdata.id)
               .slice(0, 3)
               .map((relatedWork) => (
                 <Link
